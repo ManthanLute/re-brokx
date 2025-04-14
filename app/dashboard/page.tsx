@@ -1,13 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Building, CreditCard, DollarSign, FileText, Users, Clock, Calendar, TrendingUp, Search } from "lucide-react"
+import { Building, CreditCard, DollarSign, FileText, Users, Clock, Calendar, TrendingUp, Search, Plus } from "lucide-react";
 import { format } from "date-fns"
 import {
   BarChart,
   Bar,
   XAxis,
   YAxis,
+
+
   CartesianGrid,
   Tooltip,
   Legend,
@@ -17,14 +19,28 @@ import {
   Cell,
 } from "recharts"
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Calendar as CalendarComponent } from "@/components/ui/calendar"
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import AddPropertyForm from "@/components/AddPropertyForm";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 // Sample data for charts
 const revenueData = [
   { name: "Jan", revenue: 4500000 },
@@ -68,10 +84,13 @@ const dealStatusData = [
 const COLORS = ["#4A9FE6", "#7CC2F5", "#1A5B9F", "#0F2A43", "#1E293B"]
 
 export default function DashboardPage() {
+
+  const [isOpen, setIsOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(new Date())
   const [searchQuery, setSearchQuery] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const [activeAgents, setActiveAgents] = useState([
+
     { name: "Rahul Sharma", deals: 12, revenue: "₹45,00,000", avatar: "RS", growth: 15 },
     { name: "Priya Patel", deals: 9, revenue: "₹32,50,000", avatar: "PP", growth: 12 },
     { name: "Amit Kumar", deals: 7, revenue: "₹28,75,000", avatar: "AK", growth: 9 },
@@ -103,8 +122,25 @@ export default function DashboardPage() {
           <h2 className="text-2xl font-bold tracking-tight">Dashboard</h2>
           <p className="text-muted-foreground">Welcome back! Here's an overview of your business.</p>
         </div>
-        <div className="flex flex-col sm:flex-row items-center gap-2">
-          <Popover>
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button className="w-full sm:w-auto transition-all duration-300 hover:shadow-md">
+                <Plus className="mr-2 h-4 w-4" />Add Property
+              </Button>
+            </DialogTrigger>
+
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add New Property</DialogTitle>
+              </DialogHeader>
+
+              <AddPropertyForm setIsOpen={setIsOpen} />
+
+            </DialogContent>
+          </Dialog>
+
+                    <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="w-full justify-start text-left font-normal sm:w-auto">
                 <Calendar className="mr-2 h-4 w-4" />
@@ -130,7 +166,9 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">₹1,25,45,000</div>
+
             <p className="text-xs text-muted-foreground">
+
               <span className="text-green-500 font-medium">+12.5%</span> from last month
             </p>
           </CardContent>
@@ -142,7 +180,9 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">24</div>
+
             <p className="text-xs text-muted-foreground">
+
               <span className="text-green-500 font-medium">+3</span> new this week
             </p>
           </CardContent>
@@ -154,7 +194,9 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">₹18,75,000</div>
+
             <p className="text-xs text-muted-foreground">
+
               <span className="text-amber-500 font-medium">5</span> invoices pending
             </p>
           </CardContent>
@@ -166,7 +208,9 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">156</div>
+
             <p className="text-xs text-muted-foreground">
+
               <span className="text-green-500 font-medium">+12</span> new listings
             </p>
           </CardContent>
